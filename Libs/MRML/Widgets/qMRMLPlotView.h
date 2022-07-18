@@ -100,6 +100,8 @@ protected slots:
 protected:
   QScopedPointer<qMRMLPlotViewPrivate> d_ptr;
 
+  virtual void mouseDoubleClickEvent(QMouseEvent* event);
+
   /// Handle keyboard events
   void keyPressEvent(QKeyEvent* event) override;
 

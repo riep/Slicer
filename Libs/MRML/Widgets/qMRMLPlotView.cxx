@@ -480,6 +480,12 @@ void qMRMLPlotViewPrivate::RecalculateBounds()
       // skip uninitialized bounds.
       continue;
       }
+    if (bounds[3] == bounds[2])
+      {
+      // If bounds are equal add space to render tick label correctly
+      bounds[2] -= 1.0e-4;
+      bounds[3] += 1.0e-4;
+      }
     int corner = q->chart()->GetPlotCorner(plot);
 
     // Initialize the appropriate ranges, or push out the ranges
@@ -596,6 +602,8 @@ void qMRMLPlotViewPrivate::RecalculateBounds()
     axis->SetUnscaledMinimumLimit(limit[0]);
     axis->SetUnscaledMaximumLimit(limit[1]);
     axis->SetUnscaledRange(range[0], range[1]);
+    // If axis was previously set to FIXED, make sure to set them in AUTO as vtkAxis::AutoScale opperates only on AUTO behavior axis
+    axis->SetBehavior(vtkAxis::AUTO);
     axis->AutoScale();
   }
 
@@ -1069,7 +1077,7 @@ void qMRMLPlotView::fitToContent()
   Q_D(qMRMLPlotView);
   d->RecalculateBounds();
   // Repaint the chart scene
-  this->scene()->SetDirty(true);
+  // this->scene()->SetDirty(true); induced strange plot behaviors
   this->update();
 }
 
@@ -1126,4 +1134,14 @@ void qMRMLPlotView::saveAsSVG(const QString & fileName)
   exporter->SetRenderWindow(this->renderWindow());
   exporter->SetFilePrefix(filePathPrefix.toStdString().c_str());
   exporter->Update();
+}
+
+// ----------------------------------------------------------------------------
+void qMRMLPlotView::mouseDoubleClickEvent(QMouseEvent* event)
+{
+    Q_D(qMRMLPlotView);
+    if (event->button() == Qt::MidButton)
+    {
+        this->fitToContent();
+    }
 }
