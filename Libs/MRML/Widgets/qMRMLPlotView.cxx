@@ -602,8 +602,6 @@ void qMRMLPlotViewPrivate::RecalculateBounds()
     axis->SetUnscaledMinimumLimit(limit[0]);
     axis->SetUnscaledMaximumLimit(limit[1]);
     axis->SetUnscaledRange(range[0], range[1]);
-    // If axis was previously set to FIXED, make sure to set them in AUTO as vtkAxis::AutoScale opperates only on AUTO behavior axis
-    axis->SetBehavior(vtkAxis::AUTO);
     axis->AutoScale();
   }
 
