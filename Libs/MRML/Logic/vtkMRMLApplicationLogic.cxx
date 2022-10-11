@@ -433,7 +433,8 @@ void vtkMRMLApplicationLogic::SetInteractionNode(vtkMRMLInteractionNode* interac
 
   vtkNew<vtkIntArray> events;
   events->InsertNextValue(vtkMRMLInteractionNode::EditNodeEvent);
-  events->InsertNextValue(vtkMRMLInteractionNode::ShowViewContextMenuEvent);
+  // Disable view context menu
+  // events->InsertNextValue(vtkMRMLInteractionNode::ShowViewContextMenuEvent);
   vtkSetAndObserveMRMLNodeEventsMacro(this->Internal->InteractionNode, interactionNode, events);
 }
 
